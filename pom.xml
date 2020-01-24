@@ -15,4 +15,12 @@
         <module>backend</module>
     </modules>
 
+    <distributionManagement>
+        <repository>
+            <id>RailwayTickietOfficeSpringAngular</id>
+            <name>RailwayTickietOfficeSpringAngular</name>
+            <url>file:///home/RailwayTickietOfficeSpringAngular</url>
+        </repository>
+    </distributionManagement>
+
 </project>
