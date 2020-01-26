@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "flights")
+@Table(name = "trains")
 public class Train extends BaseEntity {
 
     public Train(){}

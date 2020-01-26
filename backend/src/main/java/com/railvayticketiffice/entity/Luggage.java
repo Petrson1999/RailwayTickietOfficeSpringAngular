@@ -15,7 +15,7 @@ public class Luggage extends BaseEntity {
     }
 
     @ManyToOne(optional=false, cascade= CascadeType.ALL)
-    @JoinColumn(name="seat_id")
+    @JoinColumn(name="ticket_id")
     private Ticket ticket;
 
     public void setTicket(Ticket ticket) {

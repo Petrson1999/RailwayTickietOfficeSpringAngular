@@ -26,7 +26,7 @@ public class Ticket extends BaseEntity {
 
 
     @ManyToOne(optional=false, cascade= CascadeType.ALL)
-    @JoinColumn(name="type_id")
+    @JoinColumn(name="flight_id")
     private Flight flight;
 
     @ManyToOne(optional=false, cascade= CascadeType.ALL)
