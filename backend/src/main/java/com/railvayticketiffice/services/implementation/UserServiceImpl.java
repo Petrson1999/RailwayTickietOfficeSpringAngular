@@ -3,6 +3,7 @@ package com.railvayticketiffice.services.implementation;
 import com.railvayticketiffice.data.requests.SignUpRequest;
 import com.railvayticketiffice.data.responses.UserResponse;
 import com.railvayticketiffice.entity.User;
+import com.railvayticketiffice.enums.Role;
 import com.railvayticketiffice.exception.RequestException;
 import com.railvayticketiffice.repositories.UserRepository;
 import com.railvayticketiffice.services.interfaces.UserService;
@@ -38,10 +39,10 @@ public class UserServiceImpl implements UserService {
             throw new RequestException("Username already exists", HttpStatus.CONFLICT);
         }
 
-        User user = new User(signUpRequest.getLogin(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getRole(),
+        User user = new User(signUpRequest.getLogin(), passwordEncoder.encode(signUpRequest.getPassword()), Role.USER.toString(),
                 signUpRequest.getName(), signUpRequest.getSurname());
 
-        return new UserResponse(userRepository.saveAndFlush(user));
+        return new UserResponse(true, "registration successful!", userRepository.saveAndFlush(user));
     }
 
     @Override

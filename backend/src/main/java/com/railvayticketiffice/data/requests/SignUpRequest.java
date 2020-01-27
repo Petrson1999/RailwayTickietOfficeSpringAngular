@@ -7,12 +7,12 @@ import javax.validation.constraints.Size;
 
 public class SignUpRequest {
 
-    public SignUpRequest(){}
+    public SignUpRequest() {
+    }
 
-    public SignUpRequest(@NotNull @NotBlank @Size(min = 3, max = 24) String login, @NotNull @NotBlank @Size(min = 6, max = 64) String password, @NotNull @NotBlank String role, @NotNull @NotBlank String name, @NotNull @NotBlank String surname) {
+    public SignUpRequest(@NotNull @NotBlank @Size(min = 3, max = 24) String login, @NotNull @NotBlank @Size(min = 6, max = 64) String password, @NotNull @NotBlank String name, @NotNull @NotBlank String surname) {
         this.login = login;
         this.password = password;
-        this.role = role;
         this.name = name;
         this.surname = surname;
     }
@@ -26,10 +26,6 @@ public class SignUpRequest {
     @NotBlank
     @Size(min = 6, max = 64)
     private String password;
-
-    @NotNull
-    @NotBlank
-    private String role;
 
     @NotNull
     @NotBlank
@@ -53,14 +49,6 @@ public class SignUpRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getName() {

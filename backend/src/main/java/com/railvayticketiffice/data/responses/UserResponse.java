@@ -3,11 +3,12 @@ package com.railvayticketiffice.data.responses;
 
 import com.railvayticketiffice.entity.User;
 
-public class UserResponse {
+public class UserResponse extends BaseResponse{
 
     public UserResponse(){}
 
-    public UserResponse(Integer id, String login, String role, String name, String surname, double funds) {
+    public UserResponse(boolean succeeded, String message, Integer id, String login, String role, String name, String surname, double funds) {
+        super(succeeded, message);
         this.id = id;
         this.login = login;
         this.role = role;
@@ -16,14 +17,8 @@ public class UserResponse {
         this.funds = funds;
     }
 
-    private Integer id;
-    private String login;
-    private String role;
-    private String name;
-    private String surname;
-    private double funds;
-
-    public UserResponse(User user) {
+    public UserResponse(boolean succeeded, String message, User user) {
+        super(succeeded, message);
         this.id = user.getId();
         this.login = user.getLogin();
         this.role = user.getRole();
@@ -31,6 +26,14 @@ public class UserResponse {
         this.surname = user.getSurname();
         this.funds = user.getFunds();
     }
+
+
+    private Integer id;
+    private String login;
+    private String role;
+    private String name;
+    private String surname;
+    private double funds;
 
     public Integer getId() {
         return id;
