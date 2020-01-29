@@ -10,7 +10,7 @@ import {
   CollapseModule,
   ModalModule,
   ProgressbarModule,
-  TabsModule,
+  TabsModule, TimepickerModule,
   TooltipModule
 } from "ngx-bootstrap";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -21,12 +21,15 @@ import {AppRoutingModule} from "./routing/app-routing.module";
 import {appRoutes} from "./routing/routes";
 import {AuthInterceptor} from "./auth/auth.interceptor";
 import {LandingComponent} from "./components/landing/landing.component";
+import { TicketsComponent } from './components/tickets/tickets.component';
+import {SelectDropDownModule} from "ngx-select-dropdown";
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    LandingComponent
+    LandingComponent,
+    TicketsComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,8 @@ import {LandingComponent} from "./components/landing/landing.component";
     AppRoutingModule,
     FormsModule,
     CarouselModule.forRoot(),
+    SelectDropDownModule,
+    TimepickerModule.forRoot(),
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]

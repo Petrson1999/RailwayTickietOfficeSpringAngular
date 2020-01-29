@@ -126,4 +126,7 @@ public class Flight extends BaseEntity {
     public Train getTrain() {
         return train;
     }
+
+
+
 }

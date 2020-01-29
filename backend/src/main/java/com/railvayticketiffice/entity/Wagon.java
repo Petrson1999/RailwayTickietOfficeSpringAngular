@@ -60,5 +60,11 @@ public class Wagon extends BaseEntity {
         this.name = name;
     }
 
+    public Collection<Seat> getSeats() {
+        return seats;
+    }
 
+    public void setSeats(Collection<Seat> seats) {
+        this.seats = seats;
+    }
 }

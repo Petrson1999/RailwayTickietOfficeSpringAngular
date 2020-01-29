@@ -9,7 +9,7 @@ public class Ticket extends BaseEntity {
 
     public Ticket(){}
 
-    public Ticket(int id, Flight flight, User user, double cost, Seat seatId){
+    public Ticket(int id, Flight flight, User user, double cost, Seat seat){
         super(id);
         this.flight = flight;
         this.user = user;
@@ -17,7 +17,7 @@ public class Ticket extends BaseEntity {
         this.seat = seat;
     }
 
-    public Ticket(Flight flight, User user, double cost, Seat seatId){
+    public Ticket(Flight flight, User user, double cost, Seat seat){
         this.flight = flight;
         this.user = user;
         this.cost = cost;

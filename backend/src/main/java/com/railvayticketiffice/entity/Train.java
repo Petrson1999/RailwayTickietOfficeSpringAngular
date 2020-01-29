@@ -48,4 +48,19 @@ public class Train extends BaseEntity {
         return locomotive;
     }
 
+    public Collection<Wagon> getWagons() {
+        return wagons;
+    }
+
+    public void setWagons(Collection<Wagon> wagons) {
+        this.wagons = wagons;
+    }
+
+    public Collection<Flight> getFlights() {
+        return flights;
+    }
+
+    public void setFlights(Collection<Flight> flights) {
+        this.flights = flights;
+    }
 }
