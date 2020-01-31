@@ -23,13 +23,15 @@ import {AuthInterceptor} from "./auth/auth.interceptor";
 import {LandingComponent} from "./components/landing/landing.component";
 import { TicketsComponent } from './components/tickets/tickets.component';
 import {SelectDropDownModule} from "ngx-select-dropdown";
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     LandingComponent,
-    TicketsComponent
+    TicketsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

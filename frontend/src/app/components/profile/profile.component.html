@@ -1,0 +1,46 @@
+<app-header></app-header>
+
+<div class="background-image">
+  <section class="py-5">
+    <div class="card flex-row my-5 card-center">
+      <div class="card-body">
+        <h5 class="card-title text-center">Profile</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Login : {{user.login}}</li>
+          <li class="list-group-item">Name : {{user.name}}</li>
+          <li class="list-group-item">Surname : {{user.surname}}</li>
+        </ul>
+        <h5 class="card-title text-center profile-card-header">My tickets</h5>
+        <div class="container">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th scope="col">#Train</th>
+              <th scope="col">From-where-to-where</th>
+              <th scope="col">Date</th>
+              <th scope="col">Wagon</th>
+              <th scope="col">Seat</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ticket of actualUserTickets">
+                <td>{{ticket.trainName}}</td>
+                <td>{{ticket.departureStation}} / {{ticket.arrivalStation}}</td>
+                <td><span class="badge badge-success">{{ticket.departureTime | date: 'dd/MM/yyyy'}} / {{ticket.arrivalTime | date: 'dd/MM/yyyy'}}</span></td>
+                <td>{{ticket.wagonNumber}}</td>
+                <td>{{ticket.seatNumber}}}</td>
+              </tr>
+              <tr *ngFor="let ticket of deprecatedUserTickets">
+                <td>{{ticket.trainName}}</td>
+                <td>{{ticket.departureStation}} / {{ticket.arrivalStation}}</td>
+                <td><span class="badge badge-danger">{{ticket.departureTime | date: 'dd/MM/yyyy'}} / {{ticket.arrivalTime | date: 'dd/MM/yyyy'}}</span></td>
+                <td>{{ticket.wagonNumber}}</td>
+                <td>{{ticket.seatNumber}}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

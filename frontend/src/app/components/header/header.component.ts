@@ -41,7 +41,6 @@ export class HeaderComponent implements OnInit {
   logOut() {
     localStorage.removeItem("userToken");
     localStorage.removeItem("userId");
-    localStorage.removeItem("constant_userId");
     localStorage.removeItem('userRoles');
     this.router.navigate([""]);
   }
@@ -51,7 +50,6 @@ export class HeaderComponent implements OnInit {
       (data: any) => {
         localStorage.setItem("userToken", data.accessToken);
         localStorage.setItem("userId", data.userId);
-        localStorage.setItem("constant_userId", data.userId);
         localStorage.setItem('userRoles', data.userRoles[0].authority);
         this.router.navigate(["/profile/" + data.userId]);
         this.modalRef.hide();
@@ -90,7 +88,7 @@ export class HeaderComponent implements OnInit {
   }
 
   goToProfile() {
-    let userId = localStorage.getItem('UserId');
+    let userId = localStorage.getItem('userId');
     this.router.navigate(["/profile/" + userId]);
   }
 
