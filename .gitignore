@@ -6,6 +6,7 @@ HELP.md
 /dist
 /tmp
 /out-tsc
+/backend/src/main/resources/static
 /frontend/dist
 /frontend/node
 /frontend/target
