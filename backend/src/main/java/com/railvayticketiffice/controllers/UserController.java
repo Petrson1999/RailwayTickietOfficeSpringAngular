@@ -34,5 +34,12 @@ public class UserController {
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponse> getById(@PathVariable int userId) {
+        LOG.debug("method was invoked");
+        UserResponse userResponse = userService.getById(userId);
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    }
+
 
 }

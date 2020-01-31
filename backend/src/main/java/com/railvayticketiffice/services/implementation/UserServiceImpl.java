@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -48,6 +50,20 @@ public class UserServiceImpl implements UserService {
     public boolean existsByUsername(String login) {
         LOG.debug("Checking if username exists");
         return userRepository.findByLogin(login).isPresent();
+    }
+
+    @Override
+    public UserResponse getById(int userId) {
+        Optional<User> optionalUser =userRepository.findById(userId);
+        User user;
+        if(optionalUser.isPresent()){
+            user = optionalUser.get();
+        }
+        else {
+            return null;
+        }
+
+        return new UserResponse(true, "user successfully received!", userRepository.saveAndFlush(user));
     }
 
 }

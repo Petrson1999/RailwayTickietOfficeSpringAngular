@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserModel} from "../../models/user.model";
 import {UserTicketsModel} from "../../models/user-tickets.model";
+import {HttpErrorResponse} from "@angular/common/http";
+import {UserService} from "../../services/user.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-proffile',
@@ -9,7 +12,8 @@ import {UserTicketsModel} from "../../models/user-tickets.model";
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() {
+  constructor(private userService: UserService,
+              private toastr: ToastrService) {
     this.user = {
       id: 0,
       login: '',
@@ -26,6 +30,19 @@ export class ProfileComponent implements OnInit {
   deprecatedUserTickets: UserTicketsModel[];
 
   ngOnInit() {
+    this.initUserProfile();
+  }
+
+  initUserProfile() {
+    let userId = localStorage.getItem('userId');
+    this.userService.getUserById(userId).subscribe(
+      (data: UserModel) => {
+        this.user = data;
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(error.error.message);
+      }
+    )
   }
 
 }

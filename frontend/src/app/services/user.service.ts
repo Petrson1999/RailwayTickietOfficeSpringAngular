@@ -25,8 +25,8 @@ export class UserService {
         return this.http.post(this.rootUrl + "/auth/sign-in", data, { headers: reqHeader });
     }
 
-    /*getUserById(id: string) {
-        return this.http.get(this.rootUrl + "api/Account/" + id);
-    }*/
+    getUserById(id: string) {
+        return this.http.get(this.rootUrl + "/account/" + id);
+    }
 
 }
