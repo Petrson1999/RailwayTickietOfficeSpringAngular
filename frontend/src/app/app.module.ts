@@ -24,6 +24,7 @@ import {LandingComponent} from "./components/landing/landing.component";
 import { TicketsComponent } from './components/tickets/tickets.component';
 import {SelectDropDownModule} from "ngx-select-dropdown";
 import { ProfileComponent } from './components/profile/profile.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     HeaderComponent,
     LandingComponent,
     TicketsComponent,
-    ProfileComponent
+    ProfileComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

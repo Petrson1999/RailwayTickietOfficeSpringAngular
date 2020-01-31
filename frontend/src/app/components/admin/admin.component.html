@@ -1,0 +1,167 @@
+<app-header></app-header>
+<div class="background-image">
+
+  <section class="py-5">
+    <div class="card flex-row"
+         style="width: 80%; margin-left: auto; margin-right: auto; margin-top: 5%">
+      <div class="card-body" style="padding: 0">
+
+        <div class="container-fluid" style="padding: 0">
+          <h5 class="card-title text-center" style="margin-top: 1%">Administration</h5>
+          <hr style="margin-bottom: 0">
+        </div>
+        <div class="container-fluid" style="padding: 0">
+          <div id="wrapper">
+
+            <!-- Sidebar -->
+            <ul class="sidebar navbar-nav rounded-left ">
+              <li class="nav-item cursor" (click)="showFlights()" [class.active]="flightsIsShow">
+                <a class="nav-link" >
+                  <span>Flights</span></a>
+              </li>
+              <li class="nav-item cursor" (click)="showStations()" [class.active]="stationsIsShow">
+                <a class="nav-link " >
+                  <span>Stations</span></a>
+              </li>
+              <li class="nav-item cursor" (click)="showTrains()" [class.active]="trainsIsShow">
+                <a class="nav-link" >
+                  <span>Trains</span>
+                </a>
+              </li>
+              <li class="nav-item cursor" (click)="showWagons()" [class.active]="wagonsIsShow">
+                <a class="nav-link" >
+                  <span>Wagons</span>
+                </a>
+              </li>
+            </ul>
+
+            <div id="content-wrapper" >
+              <div *ngIf="flightsIsShow" class="container">
+                <div style="width: 20%; cursor: pointer; margin: 3% auto;">
+                  <a class="btn btn-dark btn-xl" style="color: white" data-toggle="modal"
+                     data-target="#ModalFlight">Add-flight</a>
+                </div>
+              </div>
+              <div *ngIf="flightsIsShow" class="container">
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col">Train</th>
+                    <th scope="col">From-where-to-where</th>
+                    <th scope="col">Date</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let flight of flights" id="flight_row"
+                        class="cursor">
+                      <th scope="row">{{flight.trainName}}</th>
+                      <td>{{flight.departureStationDTO.name}} - {{flight.arrivalStationDTO.name}}
+                      </td>
+                      <td>{{flight.formatedDepartureTime | date: 'dd/MM/yyyy'}} - {{flight.formatedArrivalTime | date: 'dd/MM/yyyy'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div *ngIf="stationsIsShow" class="container">
+                <div style="width: 20%; cursor: pointer; margin: 3% auto;">
+                  <a class="btn btn-dark btn-xl" style="color: white" data-toggle="modal"
+                     data-target="#ModalStation">Add station</a>
+                </div>
+              </div>
+              <div *ngIf="stationsIsShow" class="container">
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col">station name</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let station of stations">
+                      <td>{{station.name}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div *ngIf="trainsIsShow" class="container">
+                <div style="width: 20%; cursor: pointer; margin: 3% auto;">
+                  <a class="btn btn-dark btn-xl" style="color: white" data-toggle="modal"
+                     data-target="#ModalTrain">Add train</a>
+                </div>
+              </div>
+              <div *ngIf="trainsIsShow" class="container">
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col">train name</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let train of trains">
+                      <td>{{train.name}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div *ngIf="wagonsIsShow" class="container">
+                <div style="width: 20%; cursor: pointer; margin: 3% auto;">
+                  <a class="btn btn-dark btn-xl" style="color: white" data-toggle="modal"
+                     data-target="#ModalWagonType">Add wagon type</a>
+                </div>
+              </div>
+              <div *ngIf="wagonsIsShow" class="container">
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col">wagon type name</th>
+                    <th scope="col">seats count</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let wagonType of wagonTypes">
+                      <td>{{wagonType.name}}</td>
+                      <td>{{wagonType.numberOfSeats}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="wagonsIsShow" class="container">
+                <div style="width: 20%; cursor: pointer; margin: 3% auto;">
+                  <a class="btn btn-dark btn-xl" style="color: white" data-toggle="modal"
+                     data-target="#ModalWagon">Add wagon</a>
+                </div>
+              </div>
+              <div *ngIf="wagonsIsShow" class="container">
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col">wagon name</th>
+                    <th scope="col">wagon type name</th>
+                    <th scope="col">seats count</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let wagon of wagons">
+                      <td>{{wagon.name}}</td>
+                      <td>{{wagon.wagonType}}</td>
+                      <td>{{wagon.seats.length}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+
+            <!-- /.content-wrapper -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</div>
