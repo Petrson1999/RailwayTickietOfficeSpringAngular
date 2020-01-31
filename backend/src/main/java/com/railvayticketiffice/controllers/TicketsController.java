@@ -27,7 +27,13 @@ public class TicketsController {
     @PostMapping(path = "/order")
     public ResponseEntity<BaseResponse> getFlightsBySearch(@RequestBody OrderRequest orderRequest) {
         boolean success = ticketsService.addTicket(orderRequest);
-        BaseResponse baseResponse = new BaseResponse(success, "ticket successfully purchased");
+        String message;
+        if(success){
+            message="ticket successfully purchased";
+        }else {
+            message="failed to buy a ticket";
+        }
+        BaseResponse baseResponse = new BaseResponse(success, message);
         return new ResponseEntity<>(baseResponse, HttpStatus.OK);
     }
 

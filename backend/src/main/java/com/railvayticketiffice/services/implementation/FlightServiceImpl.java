@@ -2,12 +2,9 @@ package com.railvayticketiffice.services.implementation;
 
 import com.railvayticketiffice.data.requests.FlightSearchRequest;
 import com.railvayticketiffice.dto.*;
-import com.railvayticketiffice.entity.Flight;
-import com.railvayticketiffice.entity.Seat;
-import com.railvayticketiffice.entity.Ticket;
-import com.railvayticketiffice.entity.Wagon;
-import com.railvayticketiffice.repositories.FlightRepository;
-import com.railvayticketiffice.repositories.TicketRepository;
+import com.railvayticketiffice.entity.*;
+import com.railvayticketiffice.dao.repositories.FlightRepository;
+import com.railvayticketiffice.dao.repositories.TicketRepository;
 import com.railvayticketiffice.services.interfaces.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,13 +85,15 @@ public class FlightServiceImpl implements FlightService {
     public List<WagonDTO> getFlightSeats(int flightId) {
         List<WagonDTO> wagonDtos = new ArrayList<>();
 
-        Flight flight = flightRepository.getOne(flightId);
+        Flight flight = flightRepository.findById(flightId);
 
         if (flight == null) {
             return null;
         }
 
-        List<Wagon> wagons = new ArrayList<>(flight.getTrain().getWagons());
+        Train train = flight.getTrain();
+
+        List<Wagon> wagons = new ArrayList<>(train.getWagons());
 
         List<Ticket> tickets = ticketRepository.findByFlight(flight);
 

@@ -1,7 +1,7 @@
 package com.railvayticketiffice.services.implementation;
 
 import com.railvayticketiffice.entity.Station;
-import com.railvayticketiffice.repositories.StationRepository;
+import com.railvayticketiffice.dao.repositories.StationRepository;
 import com.railvayticketiffice.services.interfaces.StationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.railvayticketiffice.security.user;
 
 import com.railvayticketiffice.entity.User;
-import com.railvayticketiffice.repositories.UserRepository;
+import com.railvayticketiffice.dao.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
+
+
 
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {

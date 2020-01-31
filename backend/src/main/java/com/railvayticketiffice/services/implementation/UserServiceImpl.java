@@ -5,7 +5,7 @@ import com.railvayticketiffice.data.responses.UserResponse;
 import com.railvayticketiffice.entity.User;
 import com.railvayticketiffice.enums.Role;
 import com.railvayticketiffice.exception.RequestException;
-import com.railvayticketiffice.repositories.UserRepository;
+import com.railvayticketiffice.dao.repositories.UserRepository;
 import com.railvayticketiffice.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -7,6 +7,7 @@ import java.util.Collection;
 @Table(name = "seats")
 public class Seat extends BaseEntity {
 
+
     public Seat() {
     }
 

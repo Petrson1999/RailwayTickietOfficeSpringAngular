@@ -155,6 +155,9 @@ export class TicketsComponent implements OnInit {
       (data: any) => {
         if (data.succeeded) {
           this.toastr.success(data.message);
+          this.modalRef.hide();
+        }else {
+          this.toastr.error(data.message);
         }
       },
       (error: HttpErrorResponse) => {
