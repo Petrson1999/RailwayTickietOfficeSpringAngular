@@ -23,19 +23,21 @@
             </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let ticket of actualUserTickets">
-                <td>{{ticket.trainName}}</td>
-                <td>{{ticket.departureStation}} / {{ticket.arrivalStation}}</td>
-                <td><span class="badge badge-success">{{ticket.departureTime | date: 'dd/MM/yyyy'}} / {{ticket.arrivalTime | date: 'dd/MM/yyyy'}}</span></td>
-                <td>{{ticket.wagonNumber}}</td>
-                <td>{{ticket.seatNumber}}}</td>
-              </tr>
-              <tr *ngFor="let ticket of deprecatedUserTickets">
-                <td>{{ticket.trainName}}</td>
-                <td>{{ticket.departureStation}} / {{ticket.arrivalStation}}</td>
-                <td><span class="badge badge-danger">{{ticket.departureTime | date: 'dd/MM/yyyy'}} / {{ticket.arrivalTime | date: 'dd/MM/yyyy'}}</span></td>
-                <td>{{ticket.wagonNumber}}</td>
-                <td>{{ticket.seatNumber}}}</td>
+            <tr *ngFor="let ticket of actualUserTickets">
+              <td>{{ticket.trainName}}</td>
+              <td>{{ticket.departureStation}} - {{ticket.arrivalStation}}</td>
+              <td><span class="badge badge-success">{{ticket.departureTime | date: 'dd/MM/yyyy'}}
+                / {{ticket.arrivalTime | date: 'dd/MM/yyyy'}}</span></td>
+              <td>{{ticket.wagonNumber}}</td>
+              <td>{{ticket.seatNumber}}</td>
+            </tr>
+            <tr *ngFor="let ticket of deprecatedUserTickets">
+              <td>{{ticket.trainName}}</td>
+              <td>{{ticket.departureStation}} - {{ticket.arrivalStation}}</td>
+              <td><span class="badge badge-danger">{{ticket.departureTime | date: 'dd/MM/yyyy'}}
+                / {{ticket.arrivalTime | date: 'dd/MM/yyyy'}}</span></td>
+              <td>{{ticket.wagonNumber}}</td>
+              <td>{{ticket.seatNumber}}</td>
             </tr>
             </tbody>
           </table>

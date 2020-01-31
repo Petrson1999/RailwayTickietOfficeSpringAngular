@@ -4,6 +4,8 @@ import {UserTicketsModel} from "../../models/user-tickets.model";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../services/user.service";
 import {ToastrService} from "ngx-toastr";
+import {TicketService} from "../../services/ticket.service";
+import {WagonSeatsModel} from "../../models/wagon-seats.model";
 
 @Component({
   selector: 'app-proffile',
@@ -13,7 +15,7 @@ import {ToastrService} from "ngx-toastr";
 export class ProfileComponent implements OnInit {
 
   constructor(private userService: UserService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService, private ticketService: TicketService) {
     this.user = {
       id: 0,
       login: '',
@@ -31,6 +33,8 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.initUserProfile();
+    this.initActualUserTickets();
+    this.initDeprecatedUserTickets();
   }
 
   initUserProfile() {
@@ -38,6 +42,34 @@ export class ProfileComponent implements OnInit {
     this.userService.getUserById(userId).subscribe(
       (data: UserModel) => {
         this.user = data;
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(error.error.message);
+      }
+    )
+  }
+
+  initActualUserTickets() {
+    let userId = localStorage.getItem('userId');
+    this.ticketService.getActualUserTickets(userId).subscribe(
+      (data: any) => {
+        if(data.succeeded){
+          this.actualUserTickets = data.ticketDtos as UserTicketsModel[];
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(error.error.message);
+      }
+    )
+  }
+
+  initDeprecatedUserTickets() {
+    let userId = localStorage.getItem('userId');
+    this.ticketService.getDeprecatedUserTickets(userId).subscribe(
+      (data: any) => {
+        if(data.succeeded){
+          this.deprecatedUserTickets = data.ticketDtos as UserTicketsModel[];
+        }
       },
       (error: HttpErrorResponse) => {
         this.toastr.error(error.error.message);

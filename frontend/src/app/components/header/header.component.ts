@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
       (data: any) => {
         localStorage.setItem("userToken", data.accessToken);
         localStorage.setItem("userId", data.userId);
-        localStorage.setItem('userRoles', data.userRoles[0].authority);
+        localStorage.setItem('userRole', data.userRoles[0].authority);
         this.router.navigate(["/profile/" + data.userId]);
         this.modalRef.hide();
       },

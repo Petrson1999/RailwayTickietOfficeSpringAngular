@@ -12,4 +12,14 @@ export class SecurityService {
     isShow = localStorage.getItem('userId') !== null;
     return isShow;
   }
+
+  isAdmin() {
+    if(!this.isLogined){
+      return false;
+    }
+    let isShow: Boolean;
+    isShow = localStorage.getItem('userRole') === 'ADMIN';
+    return isShow;
+  }
+
 }

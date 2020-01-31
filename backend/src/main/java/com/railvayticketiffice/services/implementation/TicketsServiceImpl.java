@@ -1,14 +1,11 @@
 package com.railvayticketiffice.services.implementation;
 
+import com.railvayticketiffice.dao.repositories.*;
 import com.railvayticketiffice.data.requests.OrderRequest;
-import com.railvayticketiffice.entity.Flight;
-import com.railvayticketiffice.entity.Seat;
-import com.railvayticketiffice.entity.Ticket;
-import com.railvayticketiffice.entity.User;
-import com.railvayticketiffice.dao.repositories.FlightRepository;
-import com.railvayticketiffice.dao.repositories.SeatRepository;
-import com.railvayticketiffice.dao.repositories.TicketRepository;
-import com.railvayticketiffice.dao.repositories.UserRepository;
+import com.railvayticketiffice.dto.FlightDTO;
+import com.railvayticketiffice.dto.TicketDto;
+import com.railvayticketiffice.entity.*;
+import com.railvayticketiffice.services.interfaces.FlightService;
 import com.railvayticketiffice.services.interfaces.TicketsService;
 
 import org.hibernate.HibernateException;
@@ -19,21 +16,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
 public class TicketsServiceImpl implements TicketsService {
 
     @Autowired
-    public TicketsServiceImpl(TicketRepository ticketRepository, FlightRepository flightRepository, UserRepository userRepository, SeatRepository seatRepository, EntityManager entityManager) {
-        this.ticketRepository = ticketRepository;
+    public TicketsServiceImpl(FlightRepository flightRepository, UserRepository userRepository, SeatRepository seatRepository, EntityManager entityManager) {
         this.userRepository = userRepository;
         this.flightRepository = flightRepository;
         this.seatRepository = seatRepository;
         this.entityManager = entityManager;
     }
 
-    private TicketRepository ticketRepository;
 
     private FlightRepository flightRepository;
 
@@ -42,6 +42,7 @@ public class TicketsServiceImpl implements TicketsService {
     private SeatRepository seatRepository;
 
     private EntityManager entityManager;
+
 
     @Override
     public boolean addTicket(OrderRequest orderRequest) {
@@ -54,9 +55,9 @@ public class TicketsServiceImpl implements TicketsService {
 
         Ticket ticket = new Ticket(flight, user, flight.getCost(), seat);
 
-        if(user.getFunds() < ticket.getCost()){
+        if (user.getFunds() < ticket.getCost()) {
             return false;
-        }else {
+        } else {
             user.setFunds(user.getFunds() - ticket.getCost());
         }
 
@@ -72,24 +73,48 @@ public class TicketsServiceImpl implements TicketsService {
             transaction.commit();
             return true;
         } catch (HibernateException ex) {
-            if(transaction != null) {
+            if (transaction != null) {
                 transaction.rollback();
             }
         } finally {
-            if (session.isOpen()){
+            if (session.isOpen()) {
                 session.close();
             }
         }
         return false;
+    }
+
+    @Override
+    public List<TicketDto> getActualUserTickets(int userId) {
+        LocalDateTime now = LocalDateTime.now();
+        return getUserTickets(userId).stream().filter(x -> x.getDepartureTime().isAfter(now)).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<TicketDto> getDeprecatedUserTickets(int userId) {
+        LocalDateTime now = LocalDateTime.now();
+        return getUserTickets(userId).stream().filter(x -> x.getDepartureTime().isBefore(now)).collect(Collectors.toList());
+
+    }
+
+    public List<TicketDto> getUserTickets(int userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        } else return null;
 
 
+        List<Ticket> userAllTickets = new ArrayList<>(user.getTickets());
+        List<TicketDto> userAllTicketsDto = new ArrayList<>();
 
 
-
-
-        /*ticket = ticketRepository.saveAndFlush(ticket);
-
-        return ticket != null;*/
+        for (Ticket ticket : userAllTickets) {
+            TicketDto ticketDto = new TicketDto(ticket);
+            userAllTicketsDto.add(ticketDto);
+        }
+        return userAllTicketsDto;
     }
 
 }
