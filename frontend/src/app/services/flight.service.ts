@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {FlightSearchModel} from "../models/flight-search.model";
+import {FlightAddModel} from "../models/flightAddModel";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,14 @@ export class FlightService {
   getFlightWagonDto(flightId: number) {
     let reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.get(this.rootUrl + '/' + flightId + '/seats' , {headers: reqHeader});
+  }
+
+  getAllFlighs() {
+    return this.http.get(this.rootUrl);
+  }
+
+  addFlight(newFlight: FlightAddModel){
+    return this.http.put(this.rootUrl , newFlight );
   }
 
 }

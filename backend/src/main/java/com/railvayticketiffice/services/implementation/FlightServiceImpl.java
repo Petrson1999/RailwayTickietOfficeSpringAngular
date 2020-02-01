@@ -1,5 +1,8 @@
 package com.railvayticketiffice.services.implementation;
 
+import com.railvayticketiffice.dao.repositories.StationRepository;
+import com.railvayticketiffice.dao.repositories.TrainRepository;
+import com.railvayticketiffice.data.requests.AddFlightRequest;
 import com.railvayticketiffice.data.requests.FlightSearchRequest;
 import com.railvayticketiffice.dto.*;
 import com.railvayticketiffice.entity.*;
@@ -22,13 +25,17 @@ import java.util.stream.Collectors;
 public class FlightServiceImpl implements FlightService {
 
     @Autowired
-    public FlightServiceImpl(FlightRepository flightRepository, TicketRepository ticketRepository) {
+    public FlightServiceImpl(FlightRepository flightRepository, TicketRepository ticketRepository, StationRepository stationRepository, TrainRepository trainRepository) {
         this.flightRepository = flightRepository;
         this.ticketRepository = ticketRepository;
+        this.stationRepository = stationRepository;
+        this.trainRepository = trainRepository;
     }
 
     private FlightRepository flightRepository;
     private TicketRepository ticketRepository;
+    private StationRepository stationRepository;
+    private TrainRepository trainRepository;
 
     @Override
     public List<FlightDTO> getAllDto() {
@@ -71,8 +78,8 @@ public class FlightServiceImpl implements FlightService {
         return flightDtos.stream().filter(x ->
                 x.getFormatedDepartureTime().getYear() == dateTime.getYear() &&
                         (x.getFormatedDepartureTime().getMonth() == dateTime.getMonth() &&
-                        x.getFormatedDepartureTime().getDayOfMonth() == dateTime.getDayOfMonth() &&
-                        x.getFormatedDepartureTime().getHour() >= dateTime.getHour()) ||
+                                x.getFormatedDepartureTime().getDayOfMonth() == dateTime.getDayOfMonth() &&
+                                x.getFormatedDepartureTime().getHour() >= dateTime.getHour()) ||
                         (x.getFormatedDepartureTime().getYear() == dateTime.getYear() &&
                                 x.getFormatedDepartureTime().getMonth() == dateTime.getMonth() &&
                                 x.getFormatedDepartureTime().getDayOfMonth() == dateTime.getDayOfMonth() &&
@@ -102,13 +109,42 @@ public class FlightServiceImpl implements FlightService {
             List<Seat> wagonFreeSeats = null;
             wagonFreeSeats = getFreeSeatsInWagon(tickets, wagonAllSeats);
             List<SeatDTO> seats = new ArrayList<>();
-            for(Seat seat: wagonFreeSeats){
+            for (Seat seat : wagonFreeSeats) {
                 seats.add(new SeatDTO(seat.getId(), seat.getWagon().getId(), seat.getPlaceNumber()));
             }
-                wagonDtos.add(new WagonDTO(wagon,  seats));
+            wagonDtos.add(new WagonDTO(wagon, seats));
         }
 
         return wagonDtos;
+    }
+
+    @Override
+    public boolean addNewFlight(AddFlightRequest flightRequest) {
+        if (flightRequest == null) {
+            return false;
+        }
+
+        final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+        Station departureStation = stationRepository.findById(flightRequest.getDepartureStationId());
+
+        Station arrivalStation = stationRepository.findById(flightRequest.getArrivalStationId());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
+
+        LocalDateTime departureTime = LocalDateTime.parse(flightRequest.getDepartureDate(), formatter);
+
+        LocalDateTime arrivalTime = LocalDateTime.parse(flightRequest.getArrivalDate(), formatter);
+
+        String flightsName = departureStation.getName() + " " + arrivalStation;
+
+        Train train = trainRepository.findById(flightRequest.getTrainId());
+
+        Flight newFlight = new Flight(departureStation, arrivalStation, departureTime, arrivalTime, flightRequest.getCost(), flightsName, train);
+
+        newFlight = flightRepository.saveAndFlush(newFlight);
+
+        return newFlight != null;
     }
 
     private int getAllFreeSeatsNumber(Flight flight) {
@@ -166,6 +202,7 @@ public class FlightServiceImpl implements FlightService {
             return freeWagonSeat;
         } else return null;
     }
+
 
 
 }

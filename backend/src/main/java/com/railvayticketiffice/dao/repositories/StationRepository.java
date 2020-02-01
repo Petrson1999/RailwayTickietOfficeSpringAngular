@@ -11,4 +11,6 @@ public interface StationRepository extends JpaRepository<Station, Integer> {
 
     List<Station> findAll();
 
+    Station findById(int stationId);
+
 }

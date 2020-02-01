@@ -16,4 +16,6 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
 
     Flight findById(int id);
 
+    Flight saveAndFlush(Flight flight);
+
 }

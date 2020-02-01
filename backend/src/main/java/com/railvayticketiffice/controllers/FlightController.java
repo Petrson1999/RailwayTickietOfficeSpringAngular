@@ -1,8 +1,11 @@
 package com.railvayticketiffice.controllers;
 
+import com.railvayticketiffice.data.requests.AddFlightRequest;
 import com.railvayticketiffice.data.requests.FlightSearchRequest;
+import com.railvayticketiffice.data.responses.BaseResponse;
 import com.railvayticketiffice.data.responses.FlightSeatsResponse;
 import com.railvayticketiffice.data.responses.FlightsDTOResponse;
+import com.railvayticketiffice.data.responses.FlightsResponse;
 import com.railvayticketiffice.dto.FlightDTO;
 import com.railvayticketiffice.dto.WagonDTO;
 import com.railvayticketiffice.services.interfaces.FlightService;
@@ -42,6 +45,26 @@ public class FlightController {
         List<WagonDTO> wagonDTOS = flightService.getFlightSeats(flightId);
         FlightSeatsResponse flightSeatsResponse = new FlightSeatsResponse(true, "list  flight seats successfully received", wagonDTOS);
         return new ResponseEntity<>(flightSeatsResponse, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<BaseResponse> addFlights(@Valid @RequestBody AddFlightRequest addFlightRequest) {
+        boolean success = flightService.addNewFlight(addFlightRequest);
+        String message;
+        if(success){
+            message = "flight successfully added";
+        }else {
+            message = "flight not added";
+        }
+        BaseResponse baseResponse = new BaseResponse(success, message);
+        return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<FlightsResponse> getAllFlights() {
+        List<FlightDTO> flightDtos = flightService.getAllDto();
+        FlightsResponse flightsResponse = new FlightsResponse(true, "list  flights successfully received", flightDtos);
+        return new ResponseEntity<>(flightsResponse, HttpStatus.OK);
     }
 
 }
