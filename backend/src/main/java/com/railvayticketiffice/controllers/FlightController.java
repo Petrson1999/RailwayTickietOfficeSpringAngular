@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -48,6 +49,7 @@ public class FlightController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<BaseResponse> addFlights(@Valid @RequestBody AddFlightRequest addFlightRequest) {
         boolean success = flightService.addNewFlight(addFlightRequest);
         String message;
@@ -61,6 +63,7 @@ public class FlightController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<FlightsResponse> getAllFlights() {
         List<FlightDTO> flightDtos = flightService.getAllDto();
         FlightsResponse flightsResponse = new FlightsResponse(true, "list  flights successfully received", flightDtos);

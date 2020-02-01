@@ -13,4 +13,6 @@ public interface StationRepository extends JpaRepository<Station, Integer> {
 
     Station findById(int stationId);
 
+    Station saveAndFlush(Station station);
+
 }

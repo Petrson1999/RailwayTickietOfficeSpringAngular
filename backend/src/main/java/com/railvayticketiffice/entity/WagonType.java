@@ -1,5 +1,7 @@
 package com.railvayticketiffice.entity;
 
+import com.railvayticketiffice.data.requests.AddWagonTypeRequest;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -8,6 +10,11 @@ import java.util.Collection;
 public class WagonType extends BaseEntity {
 
     public WagonType() {
+    }
+
+    public WagonType(AddWagonTypeRequest addWagonTypeRequest) {
+        this.numberOfSeats = addWagonTypeRequest.getSeatsCount();
+        this.name = addWagonTypeRequest.getName();
     }
 
     public WagonType(int id, int numberOfSeats, int comfort, String name) {

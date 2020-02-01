@@ -11,6 +11,9 @@ import {FlightAddModel} from "../../models/flightAddModel";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {StationService} from "../../services/station.service";
 import {TrainService} from "../../services/train.service";
+import {WagonService} from "../../services/wagon.service";
+import {AddWagonTypeModel} from "../../models/add-wagon-type.model";
+import {AddWagonModel} from "../../models/add-wagon.model";
 
 @Component({
   selector: 'app-admin',
@@ -19,18 +22,26 @@ import {TrainService} from "../../services/train.service";
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private trainService: TrainService, private stationService: StationService, private modalService: BsModalService, private flightService: FlightService, private toastr: ToastrService) {
+  constructor(private trainService: TrainService, private stationService: StationService, private modalService: BsModalService,
+              private flightService: FlightService, private toastr: ToastrService, private wagonService: WagonService) {
     this.flights = [];
     this.stations = [];
     this.wagonTypes = [];
     this.wagons = [];
     this.flightAddModel = new FlightAddModel();
+    this.addStationName = "";
+    this.addTrainName = "";
+    this.addWagonTypeModel = new AddWagonTypeModel();
+    this.selectedWagonType = new WagonTypeModel();
+    this.addWagonModel = new AddWagonModel();
   }
 
   ngOnInit() {
     this.initFlights();
     this.initStations();
     this.initTrains();
+    this.initWagonTypes();
+
   }
 
   modalRef: BsModalRef;
@@ -41,7 +52,12 @@ export class AdminComponent implements OnInit {
   selectedArrivalStation: StationModel;
   selectedDepartureStation: StationModel;
   selectedTrain: TrainModel;
+  selectedWagonType: WagonTypeModel;
   flightAddModel: FlightAddModel;
+  addStationName: String;
+  addTrainName: String;
+  addWagonTypeModel: AddWagonTypeModel;
+  addWagonModel: AddWagonModel;
 
   flights: FlightModel[];
   stations: StationModel[];
@@ -118,8 +134,36 @@ export class AdminComponent implements OnInit {
       });
   }
 
+  initWagonTypes(){
+    this.wagonService.getAllWagonTypes().subscribe(
+      (data: any) => {
+        if (data.succeeded) {
+          this.wagonTypes = data.wagonTypes as WagonTypeModel[];
+          this.initWagons();
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(error.error.message);
+      });
+  }
+
+  initWagons(){
+    this.wagonService.getAllWagons().subscribe(
+      (data: any) => {
+        if (data.succeeded) {
+          this.wagons = data.wagons as WagonSeatsModel[];
+          if(this.wagonTypes.length >0){
+            this.selectedWagonType = this.wagonTypes[0];
+          }
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(error.error.message);
+      });
+  }
+
   addFlight() {
-    if (!this.flightAddValidation()){
+    if (!this.flightAddValidation()) {
       return;
     }
     this.flightAddModel.arrivalStationId = this.selectedArrivalStation.id;
@@ -136,6 +180,112 @@ export class AdminComponent implements OnInit {
         this.toastr.error(error.error.message);
       }
     )
+  }
+
+  addStation() {
+    if (this.addStationName.length === 0) {
+      this.toastr.warning("name cannot be empty");
+      return;
+    }
+    this.stationService.addStation(this.addStationName).subscribe(
+      (data: any) => {
+        if (data.succeeded) {
+          this.toastr.success(data.message);
+          this.initStations();
+          this.modalRef.hide();
+          this.addStationName = '';
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(error.error.message);
+      }
+    )
+  }
+
+  addTrain() {
+    if (this.addTrainName.length === 0) {
+      this.toastr.warning("name cannot be empty");
+      return;
+    }
+    this.trainService.addTrain(this.addTrainName).subscribe(
+      (data: any) => {
+        if (data.succeeded) {
+          this.toastr.success(data.message);
+          this.initTrains();
+          this.modalRef.hide();
+          this.addTrainName = '';
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(error.error.message);
+      }
+    )
+  }
+
+  addWagonType() {
+    if(this.wagonTypeAddValidation())
+    this.wagonService.addWagonType(this.addWagonTypeModel).subscribe(
+      (data: any) => {
+        if (data.succeeded) {
+          this.toastr.success(data.message);
+          this.initWagonTypes();
+          this.modalRef.hide();
+          this.addWagonTypeModel = new AddWagonTypeModel();
+        }
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(error.error.message);
+      }
+    )
+  }
+
+  addWagon() {
+    this.addWagonModel.typeId = this.selectedWagonType.id;
+    this.addWagonModel.trainId = this.selectedTrain.id;
+    if(this.wagonAddValidation())
+      this.wagonService.addWagon(this.addWagonModel).subscribe(
+        (data: any) => {
+          if (data.succeeded) {
+            this.toastr.success(data.message);
+            this.initWagons();
+            this.modalRef.hide();
+            this.addWagonModel = new AddWagonModel();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.toastr.error(error.error.message);
+        }
+      )
+  }
+
+  wagonTypeAddValidation(): boolean{
+    let valid : boolean = true;
+    if (this.addWagonTypeModel.name.length === 0) {
+      this.toastr.warning("name cannot be empty");
+      valid = false;
+    }
+    if (this.addWagonTypeModel.seatsCount === 0) {
+      this.toastr.warning("select seat count");
+      valid = false;
+    }
+    return valid;
+  }
+
+  wagonAddValidation(): boolean{
+    let valid : boolean = true;
+    if (this.addWagonModel.name.length === 0) {
+      this.toastr.warning("name cannot be empty");
+      valid = false;
+    }
+    if (this.addWagonModel.typeId === null) {
+      this.toastr.warning("select wagon type");
+      valid = false;
+    }
+    if (this.addWagonModel.trainId === null) {
+      this.toastr.warning("select train");
+      valid = false;
+    }
+    return valid;
   }
 
   flightAddValidation(): boolean {

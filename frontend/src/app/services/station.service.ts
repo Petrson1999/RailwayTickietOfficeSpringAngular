@@ -16,4 +16,11 @@ export class StationService {
     return this.http.get(this.rootUrl, {headers: reqHeader});
   }
 
+  addStation(stationName: String){
+    const body = {
+      stationName: stationName
+    };
+    return this.http.put(this.rootUrl, body);
+  }
+
 }

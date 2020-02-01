@@ -13,4 +13,6 @@ public interface SeatRepository extends JpaRepository<Seat, Integer> {
 
     List<Seat> findAll();
 
+    Seat saveAndFlush(Seat seat);
+
 }

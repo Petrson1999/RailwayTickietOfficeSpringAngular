@@ -1,11 +1,19 @@
 package com.railvayticketiffice.dto;
 
+import com.railvayticketiffice.entity.Seat;
+
 public class SeatDTO {
 
     public SeatDTO(int id, int wagonId, int placeNumber) {
         this.id = id;
         this.wagonId = wagonId;
         this.placeNumber = placeNumber;
+    }
+
+    public SeatDTO(Seat seat) {
+        this.id = seat.getId();
+        this.wagonId = seat.getWagon().getId();
+        this.placeNumber = seat.getPlaceNumber();
     }
 
     private int id;

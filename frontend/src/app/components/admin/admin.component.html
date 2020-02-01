@@ -65,8 +65,7 @@
 
               <div *ngIf="stationsIsShow" class="container">
                 <div style="width: 20%; cursor: pointer; margin: 3% auto;">
-                  <a class="btn btn-dark btn-xl" style="color: white" data-toggle="modal"
-                     data-target="#ModalStation">Add station</a>
+                  <a class="btn btn-dark btn-xl" style="color: white" (click)="openModal(AddStation)">Add station</a>
                 </div>
               </div>
               <div *ngIf="stationsIsShow" class="container">
@@ -86,8 +85,7 @@
 
               <div *ngIf="trainsIsShow" class="container">
                 <div style="width: 20%; cursor: pointer; margin: 3% auto;">
-                  <a class="btn btn-dark btn-xl" style="color: white" data-toggle="modal"
-                     data-target="#ModalTrain">Add train</a>
+                  <a class="btn btn-dark btn-xl" style="color: white" (click)="openModal(AddTrain)">Add train</a>
                 </div>
               </div>
               <div *ngIf="trainsIsShow" class="container">
@@ -107,8 +105,7 @@
 
               <div *ngIf="wagonsIsShow" class="container">
                 <div style="width: 20%; cursor: pointer; margin: 3% auto;">
-                  <a class="btn btn-dark btn-xl" style="color: white" data-toggle="modal"
-                     data-target="#ModalWagonType">Add wagon type</a>
+                  <a class="btn btn-dark btn-xl" style="color: white" (click)="openModal(AddWagonType)">Add wagon type</a>
                 </div>
               </div>
               <div *ngIf="wagonsIsShow" class="container">
@@ -129,8 +126,7 @@
               </div>
               <div *ngIf="wagonsIsShow" class="container">
                 <div style="width: 20%; cursor: pointer; margin: 3% auto;">
-                  <a class="btn btn-dark btn-xl" style="color: white" data-toggle="modal"
-                     data-target="#ModalWagon">Add wagon</a>
+                  <a class="btn btn-dark btn-xl" style="color: white" (click)="openModal(AddWagon)">Add wagon</a>
                 </div>
               </div>
               <div *ngIf="wagonsIsShow" class="container">
@@ -145,7 +141,7 @@
                   <tbody>
                   <tr *ngFor="let wagon of wagons">
                     <td>{{wagon.name}}</td>
-                    <td>{{wagon.wagonType}}</td>
+                    <td>{{wagon.wagonType.name}}</td>
                     <td>{{wagon.seats.length}}</td>
                   </tr>
                   </tbody>
@@ -168,74 +164,161 @@
 
 <ng-template #AddFlight>
 
-      <div class="card-body" >
-        <h5 class="card-title text-center">Adding Flight</h5>
-        <form class="form-flight" id="add-flights">
+  <div class="card-body">
+    <h5 class="card-title text-center">Adding Flight</h5>
+    <form class="form-flight" id="add-flights">
 
-          <div class="form-group">
+      <div class="form-group">
+        <div class="container">
+          <div class="row">
             <div class="container">
               <div class="row">
-                <div class="container">
-                  <div class="row">
-                    <div class="col">Where from :</div>
-                    <div class="col">Where :</div>
-                    <div class="w-100" style="margin: 2%"></div>
-                    <ngx-select-dropdown class="col" [config]="config" [options]="stations"
-                                         [multiple]="false" [(ngModel)]="selectedDepartureStation" name="station2">
-                    </ngx-select-dropdown>
-                    <ngx-select-dropdown class="col" [config]="config" [options]="stations"
-                                         [multiple]="false" [(ngModel)]="selectedArrivalStation" name="station2">
-                    </ngx-select-dropdown>
+                <div class="col">Where from :</div>
+                <div class="col">Where :</div>
+                <div class="w-100" style="margin: 2%"></div>
+                <ngx-select-dropdown class="col" [config]="config" [options]="stations"
+                                     [multiple]="false" [(ngModel)]="selectedDepartureStation" name="station2">
+                </ngx-select-dropdown>
+                <ngx-select-dropdown class="col" [config]="config" [options]="stations"
+                                     [multiple]="false" [(ngModel)]="selectedArrivalStation" name="station2">
+                </ngx-select-dropdown>
 
-                    <div class="w-100 " style="margin: 2%"></div>
-                    <div class="col">Departure date :</div>
-                    <div class="col">Arrival date :</div>
-                    <div class="w-100 " style="margin: 2%"></div>
-                    <div class="col  input-group date">
-                      <input type="text" class="form-control"  bsDatepicker  [(ngModel)]="flightAddModel.departureDate" name="departure">
-                    </div>
-                    <div class='col  input-group date'>
-                      <input type="text" class="form-control" bsDatepicker [(ngModel)]="flightAddModel.arrivalDate" name="dateArrival">
-                    </div>
-                    <div class="w-100 " style="margin: 2%"></div>
-                    <div class="col">Departure time :</div>
-                    <div class="col">Arrival time :</div>
-                    <div class="w-100 " style="margin: 2%"></div>
-                    <div class="col" style="padding: 0">
-                      <timepicker [(ngModel)]="flightAddModel.departureDate" #mytime1="ngModel" name="mytime1"></timepicker>
-                    </div>
-                    <div class="col" style="padding: 0">
-                      <timepicker [(ngModel)]="flightAddModel.arrivalDate" #mytime2="ngModel" name="mytime2"></timepicker>
-                    </div>
-                    <div class="w-100 " style="margin: 2%"></div>
-                    <div class="col">Train :</div>
-                    <div class="w-100 " style="margin: 2%"></div>
-                    <div class=" col row" style="width: 100%">
-                      <ngx-select-dropdown class="col" [config]="config" [options]="trains"
-                                           [multiple]="false" [(ngModel)]="selectedTrain" name="train">
-                      </ngx-select-dropdown>
-                    </div>
-                    <div class="w-100 "></div>
-                    <div class="col">
-                      cost
-                      :
-                    </div>
-                    <input [(ngModel)]="flightAddModel.cost" name="flightCost" type="number" class="form-control" placeholder="cost" id="cost">
-
-                  </div>
+                <div class="w-100 " style="margin: 2%"></div>
+                <div class="col">Departure date :</div>
+                <div class="col">Arrival date :</div>
+                <div class="w-100 " style="margin: 2%"></div>
+                <div class="col  input-group date">
+                  <input type="text" class="form-control" bsDatepicker [(ngModel)]="flightAddModel.departureDate"
+                         name="departure">
                 </div>
-              </div>
+                <div class='col  input-group date'>
+                  <input type="text" class="form-control" bsDatepicker [(ngModel)]="flightAddModel.arrivalDate"
+                         name="dateArrival">
+                </div>
+                <div class="w-100 " style="margin: 2%"></div>
+                <div class="col">Departure time :</div>
+                <div class="col">Arrival time :</div>
+                <div class="w-100 " style="margin: 2%"></div>
+                <div class="col" style="padding: 0">
+                  <timepicker [(ngModel)]="flightAddModel.departureDate" #mytime1="ngModel" name="mytime1"></timepicker>
+                </div>
+                <div class="col" style="padding: 0">
+                  <timepicker [(ngModel)]="flightAddModel.arrivalDate" #mytime2="ngModel" name="mytime2"></timepicker>
+                </div>
+                <div class="w-100 " style="margin: 2%"></div>
+                <div class="col">Train :</div>
+                <div class="w-100 " style="margin: 2%"></div>
+                <div class=" col row" style="width: 100%">
+                  <ngx-select-dropdown class="col" [config]="config" [options]="trains"
+                                       [multiple]="false" [(ngModel)]="selectedTrain" name="train">
+                  </ngx-select-dropdown>
+                </div>
+                <div class="w-100 "></div>
+                <div class="col">
+                  cost
+                  :
+                </div>
+                <input [(ngModel)]="flightAddModel.cost" name="flightCost" type="number" class="form-control"
+                       placeholder="cost" id="cost">
 
+              </div>
             </div>
           </div>
-          <button class="btn btn-lg btn-dark btn-block text-uppercase" (click)="addFlight()" type="submit" style="margin-top: 20px">
-            Add
-          </button>
-          <a class="d-block text-center mt-2 small" style="cursor: pointer;"
-             data-toggle="modal"
-             data-dismiss="modal" aria-label="Close">
-            Cancel
-          </a>
+
+        </div>
+      </div>
+      <button class="btn btn-lg btn-dark btn-block text-uppercase" (click)="addFlight()" type="submit"
+              style="margin-top: 20px">
+        Add
+      </button>
+      <a class="d-block text-center mt-2 small" style="cursor: pointer;"
+         data-toggle="modal"
+         data-dismiss="modal" aria-label="Close">
+        Cancel
+      </a>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #AddStation>
+  <div class="card-body">
+    <h5 class="card-title text-center">Add station</h5>
+    <form class="form-seat" id="add-station-form">
+
+      <div class="form-group">
+        <div class="form-label-group">
+          <p>station name</p>
+          <input type="text" id="station" class="form-control" placeholder="stationName" [(ngModel)]="addStationName"
+                 name="newStationName">
+        </div>
+      </div>
+      <button class="btn btn-lg btn-dark btn-block text-uppercase" type="submit" (click)="addStation()">Add</button>
+      <a class="d-block text-center mt-2 small" style="cursor: pointer" (click)="modalRef.hide()" aria-label="Close">
+        Cancel</a>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #AddTrain>
+  <div class="card-body">
+    <h5 class="card-title text-center">Add train</h5>
+    <form class="form-seat" id="add-train-form">
+
+      <div class="form-group">
+        <div class="form-label-group">
+          <p>train name</p>
+          <input type="text" id="train" class="form-control" [(ngModel)]="addTrainName" name="newTrainName">
+        </div>
+      </div>
+      <button class="btn btn-lg btn-dark btn-block text-uppercase" type="submit" (click)="addTrain()">Add</button>
+      <a class="d-block text-center mt-2 small" style="cursor: pointer" (click)="modalRef.hide()" aria-label="Close">Cancel</a>
+    </form>
+  </div>
+</ng-template>
+
+
+<ng-template #AddWagonType>
+  <div class="card-body">
+    <h5 class="card-title text-center">Add wagon type</h5>
+    <form class="form-seat" id="add-wagon-type-form">
+
+      <div class="form-group">
+        <div class="form-label-group">
+          <p>wagon type name</p>
+          <input type="text" id="type-name" class="form-control" [(ngModel)]="addWagonTypeModel.name" name="newWagonTypeName"/>
+        </div>
+      </div>
+      <p>seats count</p>
+      <input type="number" class="form-control"  id="seats-count" style="margin-bottom: 3%" [(ngModel)]="addWagonTypeModel.seatsCount" name="newWagonTypeSeatsCount">
+      <button class="btn btn-lg btn-dark btn-block text-uppercase" type="submit" (click)="addWagonType()">Add</button>
+      <a class="d-block text-center mt-2 small" style="cursor: pointer" (click)="modalRef.hide()">
+        Cancel
+      </a>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #AddWagon>
+      <div class="card-body">
+        <h5 class="card-title text-center">Add wagon</h5>
+        <form class="form-seat" id="add-wagon-form">
+
+          <div class="form-group">
+            <div class="form-label-group">
+              <p>wagon name</p>
+              <input type="text" id="wagon-name" class="form-control" [(ngModel)]="addWagonModel.name" name="wagonName">
+            </div>
+          </div>
+          <p>wagon type</p>
+          <ngx-select-dropdown class="col" [config]="config" [options]="wagonTypes"
+                               [multiple]="false" [(ngModel)]="selectedWagonType" name="wagonType">
+          </ngx-select-dropdown>
+          <p>train</p>
+          <ngx-select-dropdown class="col" [config]="config" [options]="trains"
+                               [multiple]="false" [(ngModel)]="selectedTrain" name="train">
+          </ngx-select-dropdown>
+          <button class="btn btn-lg btn-dark btn-block text-uppercase" type="submit" (click)="addWagon()">Add</button>
+          <a class="d-block text-center mt-2 small" style="cursor: pointer" (click)="modalRef.hide()" aria-label="Close">Cancel</a>
         </form>
       </div>
 </ng-template>

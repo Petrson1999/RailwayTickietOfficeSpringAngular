@@ -11,4 +11,6 @@ public interface WagonRepository extends JpaRepository<Wagon, Integer> {
 
     List<Wagon> findAll();
 
+    Wagon saveAndFlush(Wagon wagon);
+
 }

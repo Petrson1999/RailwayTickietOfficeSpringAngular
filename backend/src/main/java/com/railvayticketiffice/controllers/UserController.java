@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/registration")
-    public ResponseEntity<UserResponse> signUpByRegistrationLink(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<UserResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         LOG.debug("method was invoked");
         UserResponse userResponse = userService.createUser(signUpRequest);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);

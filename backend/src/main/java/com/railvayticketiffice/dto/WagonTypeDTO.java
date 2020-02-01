@@ -1,5 +1,8 @@
 package com.railvayticketiffice.dto;
 
+import com.railvayticketiffice.entity.Wagon;
+import com.railvayticketiffice.entity.WagonType;
+
 public class WagonTypeDTO {
 
     public WagonTypeDTO(int id, int numberOfSeats, int comfort, String name) {
@@ -7,6 +10,13 @@ public class WagonTypeDTO {
         this.numberOfSeats = numberOfSeats;
         this.comfort = comfort;
         this.name = name;
+    }
+
+    public WagonTypeDTO(WagonType wagonType) {
+        this.id = wagonType.getId();
+        this.numberOfSeats = wagonType.getNumberOfSeats();
+        this.comfort = wagonType.getComfort();
+        this.name = wagonType.getName();
     }
 
     private int id;

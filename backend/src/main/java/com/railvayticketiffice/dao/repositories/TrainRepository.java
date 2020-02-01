@@ -13,4 +13,5 @@ public interface TrainRepository extends JpaRepository<Train, Integer> {
 
     Train findById(int trainId);
 
+    Train saveAndFlush(Train train);
 }
