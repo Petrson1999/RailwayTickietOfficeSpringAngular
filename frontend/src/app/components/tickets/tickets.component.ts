@@ -28,6 +28,7 @@ export class TicketsComponent implements OnInit {
     this.securityService = new SecurityService();
     this.flightSearch = new FlightSearchModel();
     this.wagonSeats = [];
+    this.orderForm = new OrderFormModel();
   }
 
   securityService: SecurityService;
@@ -42,7 +43,7 @@ export class TicketsComponent implements OnInit {
   selectedFlights: FlightModel;
   selectedWagon: WagonSeatsModel;
   selectedSeat: SeatModel;
-
+  orderForm: OrderFormModel;
 
   flightSearch: FlightSearchModel;
 
@@ -146,12 +147,11 @@ export class TicketsComponent implements OnInit {
   }
 
   submitOrder() {
-    let orderForm: OrderFormModel = new OrderFormModel();
-    orderForm.flightId = this.selectedFlights.id;
-    orderForm.seatId = this.selectedSeat.id;
-    orderForm.wagonId = this.selectedSeat.wagonId;
-    orderForm.userId = +localStorage.getItem("constant_userId");
-    this.ticketService.orderTicket(orderForm).subscribe(
+    this.orderForm.flightId = this.selectedFlights.id;
+    this.orderForm.seatId = this.selectedSeat.id;
+    this.orderForm.wagonId = this.selectedSeat.wagonId;
+    this.orderForm.userId = +localStorage.getItem("constant_userId");
+    this.ticketService.orderTicket(this.orderForm).subscribe(
       (data: any) => {
         if (data.succeeded) {
           this.toastr.success(data.message);

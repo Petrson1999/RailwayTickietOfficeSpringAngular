@@ -3,4 +3,10 @@ export class OrderFormModel {
   wagonId: number;
   seatId: number;
   userId: number;
+  email: string;
+
+
+  constructor() {
+    this.email = '';
+  }
 }

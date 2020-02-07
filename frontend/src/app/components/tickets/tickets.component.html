@@ -137,6 +137,10 @@
                              [multiple]="false" [(ngModel)]="selectedSeat" name="station2">
         </ngx-select-dropdown>
       </div>
+      <div class="form-group">
+        <p>email</p>
+        <input type="email" id="email" class="form-control" [(ngModel)]="orderForm.email" name="email">
+      </div>
       <button *ngIf="securityService.isLogined()" class="btn btn-lg btn-dark btn-block text-uppercase" type="button"
               data-toggle="modal" data-dismiss="modal"
               aria-label="Close" (click)="order(ModalOrder);">To order
