@@ -1,0 +1,106 @@
+<!--navbar-->
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+  <div class="container-fluid px-0">
+    <div class="row w-100">
+        <div class="container">
+          <a class="nav-link navbar-brand" [routerLink]="['']">Railway ticket office</a>
+          <a class="nav-link navbar-brand icon train-icon" [routerLink]="['']">
+          </a>
+          <div class="collapse justify-content-end navbar-collapse"
+               id="navbarTogglerDemo03">
+            <ul class="navbar-nav mt-2 mt-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/tickets']">Tickets</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" *ngIf="securityService.isAdmin()" [routerLink]="['/admin']" style="cursor: pointer;">Admin
+                  page</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" *ngIf="securityService.isLogined()" (click)="goToProfile()" style="cursor: pointer;">Profile</a>
+              </li>
+              <li class="nav-item" *ngIf="!securityService.isLogined()">
+                <a class="nav-link cursor" (click)="openModal(SignUpModal)">Sign-up</a>
+              </li>
+              <li class="nav-item " *ngIf="!securityService.isLogined()">
+                <a class="nav-link cursor" (click)="openModal(SignInModal)">Sign-in</a>
+              </li>
+              <li class="nav-item" *ngIf="securityService.isLogined()">
+                <a class="nav-link" href="#" (click)="logOut()">Log out</a>
+              </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!--SignUpModal-->
+<ng-template #SignUpModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Sign-up</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="col-sm-12" #userRegistrationForm="ngForm" (ngSubmit)="OnSingUpFormSubmit(userRegistrationForm)">
+      <div class="form-group">
+        <label data-error="Requored field!">Login</label>
+        <input type="text" class="form-control" checkspaces name="login" maxlength="64" #login="ngModel"
+               [(ngModel)]="user.login" required deletespaces>
+        <div class="validation-error" *ngIf="login.invalid && login.touched">login is required</div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" name="password" #password="ngModel" [(ngModel)]="user.password"
+               required
+               minlength="6">
+        <div *ngIf="!password.valid && (userRegistrationForm.submitted || password.touched)" class="validation-error">
+          <div *ngIf="password.errors.required">password is required.</div>
+          <div *ngIf="password.errors.minlength">password must contain at least 6 or more characters.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label data-error="Requored field!">Name</label>
+        <input type="text" class="form-control" name="name" #name="ngModel" maxlength="64"
+               [(ngModel)]="user.name" required checkspaces>
+        <div class="validation-error" *ngIf="name.invalid && name.touched">name is required</div>
+      </div>
+      <div class="form-group">
+        <label>Surname</label>
+        <input type="text" class="form-control" name="surname" #surname="ngModel" [(ngModel)]="user.surname" required>
+        <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="validation-error">
+          <div *ngIf="surname.errors.required">
+            Email is required.
+          </div>
+        </div>
+      </div>
+      <button [disabled]="!userRegistrationForm.valid" type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</ng-template>
+
+<!--SignInModal-->
+<ng-template #SignInModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Sign-in</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="isLoginError" class="text-danger">
+      <i class="material-icons">error</i> Incorrect username or password
+    </div>
+    <form #loginForm="ngForm" class="col-sm-12" (ngSubmit)="OnLoginFormSubmit(UserName.value, Password.value)">
+      <div class="form-group">
+        <input type="text" class="form-control" #UserName ngModel name="UserName" placeholder="UserName" required>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" #Password ngModel name="Password" placeholder="Password" required>
+      </div>
+      <button [disabled]="!loginForm.valid" type="submit" class="btn btn-primary" data-dismiss="modal">Login</button>
+    </form>
+  </div>
+</ng-template>

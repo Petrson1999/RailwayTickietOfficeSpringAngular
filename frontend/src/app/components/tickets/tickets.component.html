@@ -1,0 +1,182 @@
+<app-header></app-header>
+
+<div>
+  <div class="background-image">
+
+    <!-- Page Content -->
+    <section class="py-5">
+      <div class="card flex-row my-5 card-center">
+        <div class="card-body">
+          <h5 class="card-title text-center">Order tickets</h5>
+          <hr style="margin-bottom: 3.5%">
+          <div class="container">
+            <div class="row">
+              <div class="container">
+                <form id="form-flights">
+                  <div class="row">
+                    <div class="col">Where from</div>
+                    <div class="col"></div>
+                    <div class="col">Where</div>
+                    <div class="w-100 "></div>
+                    <ngx-select-dropdown class="col" [config]="config" [options]="stations"
+                                         [multiple]="false" [(ngModel)]="selectedDepartureStation" name="station1">
+                    </ngx-select-dropdown>
+                    <div class="col">
+                      <div (click)="changeStation()" class="icon icon-change"
+                           style="width: 30px; margin-left: auto; margin-right: auto;cursor: pointer">
+                      </div>
+                    </div>
+                    <ngx-select-dropdown class="col" [config]="config" [options]="stations"
+                                         [multiple]="false" [(ngModel)]="selectedArrivalStation" name="station2">
+                    </ngx-select-dropdown>
+                    <div class="w-100 " style="margin-top: 3%"></div>
+                    <div class="col">Departure date</div>
+                    <div class="col">Departure time from</div>
+                    <div class="col"></div>
+                    <div class="w-100 "></div>
+                    <div class="col form-group" style="margin-top: 30px">
+                      <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
+                             [(ngModel)]="flightSearch.dateTime" #dateFlight1="ngModel" name="dateFlight1"
+                             id="Birthday">
+                    </div>
+                    <div class="col">
+                      <timepicker [(ngModel)]="flightSearch.dateTime" #mytime1="ngModel" name="mytime1"></timepicker>
+                    </div>
+                    <div class="col"></div>
+                    <div class="w-100 "></div>
+                    <div class="w-100 "></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="w-100" style="margin-top: 30px"></div>
+                    <div class="col"></div>
+                    <div class="col">
+                      <button (click)="flightSerch()" class="btn btn-lg btn-dark btn-block text-uppercase"
+                              type="submit">
+                        Search for trains
+                      </button>
+                    </div>
+                    <div class="col"></div>
+                    <div class="w-100" style="margin-top: 30px"></div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- flight table-->
+          <div class="container" *ngIf="flights!==null">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th scope="col">#
+                  Train
+                </th>
+                <th scope="col">
+                  From-where-to-where
+                </th>
+                <th scope="col">
+                  Date
+                </th>
+                <th scope="col">
+                  Free places
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let flight of flights" id="flight_row" (click)=" getFlightWagonDto(flight.id, SeatModal)"
+                  class="cursor">
+                <th scope="row">{{flight.name}}</th>
+                <td>{{flight.departureStationDTO.name}} / {{flight.arrivalStationDTO.name}}
+                </td>
+                <td>{{flight.formatedDepartureTime | date: 'dd/MM/yyyy'}}
+                  / {{flight.formatedArrivalTime | date: 'dd/MM/yyyy'}}</td>
+                <td>{{flight.freeSeatNumber}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- flight not found message-->
+          <div class="container" *ngIf="flights!==null && flights.length===0">
+            <div class="row">
+              <div class="col" style="text-align: center">
+                No flights found for the given path!
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+
+</div>
+
+
+<ng-template #SeatModal>
+  <div class="card-body">
+    <h5 class="card-title text-center">Ticket order</h5>
+    <ul class="list-group" id="flightInfo">
+      <li class="list-group-item">{{selectedDepartureStation.name}} - {{selectedArrivalStation.name}}</li>
+      <li class="list-group-item">{{selectedFlights.formatedDepartureTime | date: 'dd/MM/yyyy'}}
+        - {{selectedFlights.formatedArrivalTime | date: 'dd/MM/yyyy'}}</li>
+    </ul>
+    <form class="form-seat" id="ticket-order" method="post">
+      <div class="form-group">
+        <label for="wagon">Choose a wagon: </label>
+        <ngx-select-dropdown id="wagon" class="col" [config]="configWagonSelector" [options]="wagonSeats"
+                             [multiple]="false" [(ngModel)]="selectedWagon" name="wagon">
+        </ngx-select-dropdown>
+      </div>
+      <div class="form-group">
+        <label for="seat">Choose a place: </label>
+        <ngx-select-dropdown id="seat" class="col" [config]="configSeatSelector" [options]="selectedWagon.seats"
+                             [multiple]="false" [(ngModel)]="selectedSeat" name="station2">
+        </ngx-select-dropdown>
+      </div>
+      <div class="form-group">
+        <p>email</p>
+        <input type="email" id="email" class="form-control" [(ngModel)]="orderForm.email" name="email">
+      </div>
+      <button *ngIf="securityService.isLogined()" class="btn btn-lg btn-dark btn-block text-uppercase" type="button"
+              data-toggle="modal" data-dismiss="modal"
+              aria-label="Close" (click)="order(ModalOrder);">To order
+      </button>
+      <div *ngIf="!securityService.isLogined()" class="container">
+        <div class="row">
+          <div class="col" style="text-align: center; color: red;">
+            Log in to continue!
+          </div>
+        </div>
+      </div>
+      <a (click)="modalRef.hide();" class="d-block text-center mt-2 small" style="cursor: pointer" aria-label="Close">
+        Cancel</a>
+    </form>
+  </div>
+</ng-template>
+
+
+<ng-template #ModalOrder>
+
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm the order</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group" id="orderInfo">
+          <li class="list-group-item">flight : {{selectedFlights.name}}</li>
+          <li class="list-group-item">date : {{selectedFlights.formatedDepartureTime | date: 'dd/MM/yyyy'}} - {{selectedFlights.formatedArrivalTime | date: 'dd/MM/yyyy'}}</li>
+          <li class="list-group-item">wagon : {{selectedWagon.name}}</li>
+          <li class="list-group-item">seat : {{selectedSeat.placeNumber}}</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide();" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="submitOrder()">To order</button>
+      </div>
+</ng-template>
