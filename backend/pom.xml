@@ -15,7 +15,7 @@
         <full-artifact-name>RailwayTicketOfficeSpringBackend</full-artifact-name>
         <java.version>1.8</java.version>
         <jsonwebtoken.version>0.8.0</jsonwebtoken.version>
-        <spring-boot-starter-web-version>2.2.2.RELEASE</spring-boot-starter-web-version>
+        <spring-boot-starter-web-version>2.5.12</spring-boot-starter-web-version>
         <spring-boot-starter-security-version>2.2.2.RELEASE</spring-boot-starter-security-version>
         <spring-boot-starter-data-jpa-version>2.2.2.RELEASE</spring-boot-starter-data-jpa-version>
         <hibernate.version>5.4.10.Final</hibernate.version>
